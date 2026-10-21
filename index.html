@@ -1,0 +1,164 @@
+<!-- ... existing code ... -->
+  <header class="relative z-20 w-full px-3 py-2 sm:px-6 sm:py-3 flex items-center justify-between glass-panel shadow-sm border-b-2 border-emerald-200">
+    <div class="flex items-center space-x-2">
+      <button onclick="navigate('home')" class="flex items-center space-x-2 focus:outline-none group">
+        <div id="headerMascotIcon" class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-amber-100 border-2 border-amber-400 p-0.5 flex items-center justify-center shadow"></div>
+        <div class="text-left">
+          <h1 id="appTitleText" class="text-base sm:text-xl font-extrabold text-emerald-950 leading-tight">Cari Haiwan</h1>
+          <p id="appSubtitleText" class="text-xs font-bold text-emerald-600 hidden sm:block">Kindy Klub</p>
+        </div>
+      </button>
+    </div>
+
+    <div class="flex items-center space-x-1.5 sm:space-x-3">
+      <!-- Gallery Button -->
+      <button onclick="openGalleryView()" class="btn-3d px-2.5 py-1.5 sm:px-3 sm:py-2 bg-sky-600 hover:bg-sky-500 text-white font-extrabold text-xs sm:text-sm rounded-xl flex items-center space-x-1 border border-sky-700" title="Semak Gambar Semua Haiwan">
+        <span>🖼️</span>
+        <span class="hidden sm:inline">Galeri</span>
+      </button>
+
+      <!-- Language Toggle -->
+      <button id="langToggleBtn" onclick="toggleLanguage()" class="btn-3d px-2.5 py-1.5 sm:px-3.5 sm:py-2 bg-amber-400 hover:bg-amber-300 text-amber-950 font-extrabold text-xs sm:text-sm rounded-xl flex items-center space-x-1 border border-amber-500">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+<!-- ... existing code ... -->
+```
+
+```html:Find the Animal / Cari Haiwan:index.html
+<!-- ... existing code ... -->
+          <circle cx="70" cy="82" r="3.5" fill="#facc15" stroke="#d97706" stroke-width="1"/>
+        </svg>`;
+    }
+
+    const STORAGE_KEY = "kinderKlub_cariHaiwan_playerProfile";
+    let currentLang = "bm";
+    let currentSessionTotal = 10;
+    let currentQuestionIndex = 0;
+    let currentScore = 0;
+    let sessionQuestions = [];
+    let isProcessingAnswer = false;
+
+    let profileData = {
+      playerName: "",
+      familyCode: "",
+      gamesPlayed: 0,
+      questionsAnswered: 0,
+      correctAnswers: 0,
+      bestScore: 0,
+      recentActivity: ""
+    };
+
+    const I18N = {
+      bm: {
+        appTitle: "Cari Haiwan",
+        appSubtitle: "Kindy Klub",
+        langToggle: "English",
+        profileNav: "Profil",
+        homeTitle: "Cari Haiwan!",
+        homeSub: "Jom kenal dan cari haiwan comel bersama Si Beruang!",
+        sessionPrompt: "Pilih Bilangan Soalan:",
+        questionLabel: "Soalan",
+        howToPlay: "Cara Bermain",
+        howToPlayTitle: "Cara Bermain",
+        instr1: "Dengar atau baca arahan. Contohnya: \"Cari kucing.\"",
+        instr2: "Lihat 3 pilihan gambar haiwan yang dipaparkan.",
+        instr3: "Tekan pada haiwan yang betul untuk kumpul markah!",
+        instrBtn: "Faham, Jom Mula!",
+        findPrefix: "Cari",
+        instructionLabel: "Arahan",
+        scoreLabel: "Markah",
+        questionProgress: (cur, tot) => `Soalan ${cur} daripada ${tot}`,
+        answerPrompt: "Tekan jawapan yang betul:",
+        correctFeedback: "Betul! Bagus!",
+        wrongFeedback: "Tak apa! Jom teruskan.",
+        resultTitle: "Tahniah!",
+        resultSub: "Hebatnya kamu bermain hari ini!",
+        statAnswered: "Soalan Dijawab",
+        statCorrect: "Jawapan Betul",
+        statAccuracy: "Ketepatan",
+        statBest: "Skor Terbaik",
+        playAgain: "Main Lagi",
+        backHome: "Kembali ke Menu Utama",
+        profileTitle: "Profil Pemain",
+        profileSub: "Rekod Pembelajaran Kinder Klub",
+        playerNameLabel: "Nama Pemain:",
+        familyCodeLabel: "Kod Keluarga (Pilihan):",
+        statProfGames: "Sesi Dimainkan",
+        statProfQuestions: "Soalan Dijawab",
+        statProfCorrect: "Jawapan Betul",
+        statProfBest: "Skor Terbaik",
+        statProfAccuracy: "Ketepatan",
+        statProfRecent: "Aktiviti Terkini",
+        profileBack: "Kembali ke Permainan",
+        noneYet: "Belum ada"
+      },
+      en: {
+        appTitle: "Find the Animal",
+        appSubtitle: "Kindy Klub",
+        langToggle: "B. Melayu",
+        profileNav: "Profile",
+        homeTitle: "Find the Animal!",
+        homeSub: "Let's explore and find real animals with Barnaby Bear!",
+        sessionPrompt: "Choose Number of Questions:",
+        questionLabel: "Questions",
+        howToPlay: "How to Play",
+        howToPlayTitle: "How to Play",
+        instr1: "Listen to or read the prompt. For example: \"Find the cat.\"",
+        instr2: "Look at the 3 animal picture choices on screen.",
+        instr3: "Tap the correct animal to earn stars!",
+        instrBtn: "Got it, Let's Play!",
+        findPrefix: "Find the",
+        instructionLabel: "Instruction",
+        scoreLabel: "Score",
+        questionProgress: (cur, tot) => `Question ${cur} of ${tot}`,
+        answerPrompt: "Tap the matching animal:",
+        correctFeedback: "Correct! Great job!",
+        wrongFeedback: "That’s okay! Let’s keep going.",
+        resultTitle: "Well Done!",
+        resultSub: "You did wonderful exploring today!",
+        statAnswered: "Questions Answered",
+        statCorrect: "Correct Answers",
+        statAccuracy: "Accuracy",
+        statBest: "Best Score",
+        playAgain: "Play Again",
+        backHome: "Return to Main Menu",
+        profileTitle: "Player Profile",
+        profileSub: "Kinder Klub Learning Record",
+        playerNameLabel: "Player Name:",
+        familyCodeLabel: "Family Code (Optional):",
+        statProfGames: "Games Played",
+        statProfQuestions: "Questions Answered",
+        statProfCorrect: "Correct Answers",
+        statProfBest: "Best Score",
+        statProfAccuracy: "Accuracy",
+        statProfRecent: "Recent Activity",
+        profileBack: "Back to Game",
+        noneYet: "None yet"
+      }
+    };
+
+    function renderAnimalVisual(animal, isSmallChoice = false) {
+      const altText = currentLang === "bm" ? animal.name_bm : animal.name_en;
+      if (animal.imageUrl) {
+        return `
+          <img src="${animal.imageUrl}" 
+               alt="${altText}" 
+               referrerpolicy="no-referrer"
+               loading="eager"
+               class="photo-display w-full h-full object-cover shadow-sm ${isSmallChoice ? 'rounded-xl max-h-24 sm:max-h-28' : 'rounded-2xl'}" 
+               onerror="this.outerHTML = \`${animal.render().replace(/"/g, '&quot;')}\`">
+        `;
+      }
+      return animal.render();
+    }
+
+    function loadProfile() {
+<!-- ... existing code ... -->
+      document.getElementById("statProfAccuracyLabel").textContent = t.statProfAccuracy;
+      document.getElementById("statProfRecentLabel").textContent = t.statProfRecent;
+      document.getElementById("profileBackBtn").textContent = t.profileBack;
+
+      updateProfileDisplayStats();
+    }
+
+    function speakText(text, langCode) {
+<!-- ... existing code ... -->
